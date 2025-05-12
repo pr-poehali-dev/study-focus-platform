@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/use-auth";
 import Index from "./pages/Index";
 import LoginPage from "./pages/LoginPage";
+import RoomsPage from "./pages/RoomsPage";
+import ChatPage from "./pages/ChatPage";
+import VideoPage from "./pages/VideoPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,9 +23,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/rooms" element={<NotFound />} />
-            <Route path="/chat" element={<NotFound />} />
-            <Route path="/video" element={<NotFound />} />
+            <Route path="/rooms" element={<RoomsPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/video" element={<VideoPage />} />
             <Route path="/about" element={<NotFound />} />
             <Route path="/privacy" element={<NotFound />} />
             <Route path="/terms" element={<NotFound />} />
