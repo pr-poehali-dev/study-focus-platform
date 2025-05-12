@@ -1,5 +1,10 @@
-
-import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
 
 // Определяем тип пользователя
 export interface User {
@@ -37,7 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         // Проверяем наличие токена в localStorage
         const token = localStorage.getItem("auth-token");
-        
+
         if (token) {
           // В реальном приложении здесь был бы запрос к серверу для проверки токена
           // и получения данных пользователя
@@ -67,24 +72,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       // В реальном приложении здесь был бы запрос к API для авторизации
       // Для примера используем имитацию
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Проверяем учетные данные (пример)
-      if (email === "demo@example.com" && password === "password") {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Упрощаем тестовые данные для демо - любые корректные данные позволят войти
+      if (email && password.length >= 6) {
         const userData: User = {
           id: "1",
-          name: "Пользователь Demo",
-          email: "demo@example.com",
+          name: email.split("@")[0],
+          email: email,
+          avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${email}`,
         };
-        
+
         // Сохраняем токен и данные пользователя в localStorage
         localStorage.setItem("auth-token", "mock-jwt-token");
         localStorage.setItem("auth-user", JSON.stringify(userData));
-        
+
         setUser(userData);
         return;
       }
-      
+
       throw new Error("Неверное имя пользователя или пароль");
     } catch (error) {
       console.error("Ошибка входа:", error);
@@ -100,18 +106,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       // В реальном приложении здесь был бы запрос к API для регистрации
       // Для примера используем имитацию
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const userData: User = {
         id: Date.now().toString(),
         name,
         email,
       };
-      
+
       // Сохраняем токен и данные пользователя в localStorage
       localStorage.setItem("auth-token", "mock-jwt-token");
       localStorage.setItem("auth-user", JSON.stringify(userData));
-      
+
       setUser(userData);
     } catch (error) {
       console.error("Ошибка регистрации:", error);
@@ -134,19 +140,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       // В реальном приложении здесь был бы код для OAuth аутентификации
       // Для примера используем имитацию
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const userData: User = {
         id: Date.now().toString(),
         name: `Пользователь ${provider}`,
         email: `user_${Date.now()}@${provider.toLowerCase()}.com`,
         avatar: `https://ui-avatars.com/api/?name=${provider}&background=random`,
       };
-      
+
       // Сохраняем токен и данные пользователя в localStorage
       localStorage.setItem("auth-token", "mock-jwt-token");
       localStorage.setItem("auth-user", JSON.stringify(userData));
-      
+
       setUser(userData);
     } catch (error) {
       console.error(`Ошибка входа через ${provider}:`, error);
