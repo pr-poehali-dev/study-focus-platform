@@ -1,17 +1,18 @@
-
 import { Link } from "react-router-dom";
-import { BrainCircuit, Menu, X } from "lucide-react";
+import { BrainCircuit, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import { useState } from "react";
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger, 
-  SheetClose 
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
+import UserAvatar from "@/components/auth/UserAvatar";
+import { useAuth } from "@/hooks/use-auth";
 
 // Навигационные ссылки
 const navItems = [
@@ -23,6 +24,7 @@ const navItems = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-sm border-b bg-background/80 animate-fade-in">
@@ -30,7 +32,9 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center space-x-2">
             <BrainCircuit className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold font-montserrat">StudyFocus</span>
+            <span className="text-xl font-bold font-montserrat">
+              StudyFocus
+            </span>
           </Link>
         </div>
 
@@ -49,14 +53,19 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          
-          <Button
-            variant="default"
-            size="sm"
-            className="hidden md:inline-flex"
-          >
-            Войти
-          </Button>
+
+          {isAuthenticated ? (
+            <UserAvatar />
+          ) : (
+            <Button
+              variant="default"
+              size="sm"
+              className="hidden md:inline-flex"
+              asChild
+            >
+              <Link to="/login">Войти</Link>
+            </Button>
+          )}
 
           {/* Мобильное меню */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -83,7 +92,16 @@ export function Header() {
                   </SheetClose>
                 ))}
                 <div className="pt-4">
-                  <Button className="w-full">Войти</Button>
+                  {!isAuthenticated && (
+                    <Button className="w-full" asChild>
+                      <Link
+                        to="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Войти
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </nav>
             </SheetContent>
